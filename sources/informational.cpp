@@ -1,6 +1,6 @@
-#include "informational.h"
+#include "../headers/informational.h"
 #include "ui_informational.h"
-#include "buffer.h"
+#include "../headers/buffer.h"
 
 Informational::Informational(QWidget *parent) :
     QDialog(parent),
