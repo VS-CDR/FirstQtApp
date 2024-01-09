@@ -7,19 +7,18 @@ namespace Ui {
 class Informational;
 }
 
-class Informational : public QDialog
-{
-    Q_OBJECT
+class Informational : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit Informational(QWidget *parent = nullptr);
-    ~Informational();
+ public:
+  explicit Informational(QWidget* parent = nullptr);
+  ~Informational() override;
 
-private slots:
-    void on_full_info_clicked();
+ private slots:
+  void OnFullInfoClicked();
 
-private:
-    Ui::Informational *ui;
+ private:
+  Ui::Informational* ui;
 };
 
 #endif // INFORMATIONAL_H

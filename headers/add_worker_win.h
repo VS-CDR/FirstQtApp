@@ -7,19 +7,19 @@ namespace Ui {
 class AddWorkerWin;
 }
 
-class AddWorkerWin : public QDialog
-{
-    Q_OBJECT
+class AddWorkerWin : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit AddWorkerWin(QWidget *parent = nullptr);
-    ~AddWorkerWin();
+ public:
+  explicit AddWorkerWin(QWidget* parent = nullptr);
+  ~AddWorkerWin();
 
-private slots:
-    void on_ADDworker_clicked();
+ private
+  slots:
+      void AddWorkerClicked();
 
-private:
-    Ui::AddWorkerWin *ui;
+ private:
+  Ui::AddWorkerWin* ui;
 };
 
 #endif // ADDWORKERWIN_H

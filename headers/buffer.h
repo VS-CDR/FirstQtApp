@@ -4,11 +4,13 @@
 
 class Buffer{
 public:
-    Buffer();
+    Buffer() = default;
     QString age;
     QString full_name;
     QString salary;
-    unsigned n;
+    ssize_t n{0};
 };
+
 extern Buffer bf;
+
 #endif // BUFFER_H

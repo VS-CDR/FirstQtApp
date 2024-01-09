@@ -19,10 +19,10 @@ class DataBase : public QMainWindow {
   ~DataBase();
 
  private slots:
-  void on_ADDworker_clicked();
-  void on_Search_clicked();
-  void on_count_clicked();
-  void on_ADDWin_clicked();
+  void AddWorkerClicked();
+  void SearchClicked();
+  void CountClicked();
+  static void AddWinClicked();
 
  private:
   Ui::DataBase *ui;
