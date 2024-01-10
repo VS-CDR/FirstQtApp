@@ -12,7 +12,7 @@ class AddWorkerWin : public QDialog {
 
  public:
   explicit AddWorkerWin(QWidget* parent = nullptr);
-  ~AddWorkerWin();
+  ~AddWorkerWin() override;
 
  private
   slots:

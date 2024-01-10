@@ -1,123 +1,110 @@
 #include "../headers/mainwindow.h"
-#include "ui_database.h"
+#include "ui_mainwindow.h"
 #include "../headers/add_worker_win.h"
 #include "../headers/buffer.h"
 #include "../headers/informational.h"
 
 DataBase::DataBase(QWidget* parent)
-    : QMainWindow(parent), ui(new Ui::DataBase) {
-  ui->setupUi(this);
+    : QMainWindow(parent), ui_(new Ui::DataBase) {
+  ui_->setupUi(this);
   //ui->FIO->setDisabled(true);
-  ui->Year->setDisabled(true);
-  ui->ZP->setDisabled(true);
+  ui_->Year->setDisabled(true);
+  ui_->ZP->setDisabled(true);
 }
 
 DataBase::~DataBase() {
-  delete ui;
+  delete ui_;
 }
 
 long long cntSalary = 0;
 std::vector<QString> workers;
 std::vector<QPair<int, int>> workers_properties;
 
-void DataBase::AddWorkerClicked() {
-  if (bf.full_name.isEmpty()) {
-    return;
-  }
+QStandardItemModel* DataBase::NewWorkersModel() const {
   auto* data = new QStandardItemModel;
   QStringList name_columns;
   name_columns.append("ФИО сотрудника");
   name_columns.append("Год рождения");
   name_columns.append("Заработная плата");
   data->setHorizontalHeaderLabels(name_columns);
+  return data;
+}
+
+void DataBase::AddWorkerClicked() {
+  if (bf.full_name.isEmpty()) {
+    return;
+  }
+  auto* data = NewWorkersModel();
 
   workers.push_back(bf.full_name);
   workers_properties.push_back(qMakePair(bf.age.toInt(), bf.salary.toInt()));
 
-  for (unsigned cnt = 0; cnt < workers.size(); ++cnt) {
-    auto* workerFIO = new QStandardItem(workers[cnt]);
-    auto* workerBY =
-        new QStandardItem(QString::number(workers_properties[cnt].first, 10));
-    auto* workerSalary =
-        new QStandardItem(QString::number(workers_properties[cnt].second, 10));
-    data->setItem(cnt, 0, workerFIO);
-    data->setItem(cnt, 1, workerBY);
-    data->setItem(cnt, 2, workerSalary);
-  }
+  PrintWorkerEntry(data);
 
-  ui->Base->setModel(data);
-  ui->Base->resizeColumnsToContents();
+  ui_->Base->setModel(data);
+  ui_->Base->resizeColumnsToContents();
 
   cntSalary += bf.salary.toLongLong();
-  ui->TotalZP->setText(QString::number(cntSalary, 10));
+  ui_->TotalZP->setText(QString::number(cntSalary, kDec));
+}
+
+void DataBase::PrintWorkerEntry(QStandardItemModel* data) const {
+  for (int cnt = 0; cnt < std::ssize(workers); ++cnt) {
+    auto* worker_fio = new QStandardItem(workers[cnt]);
+    auto* worker_by = new QStandardItem(QString::number(
+        workers_properties[cnt].first, kDec));
+    auto* worker_salary = new QStandardItem(QString::number(
+        workers_properties[cnt].second, kDec));
+    data->setItem(cnt, 0, worker_fio);
+    data->setItem(cnt, 1, worker_by);
+    data->setItem(cnt, 2, worker_salary);
+  }
 }
 
 void DataBase::SearchClicked() {
   bool found = false;
-  if (ui->Find->isChecked()) {
-    for (unsigned i = 0; i < workers.size(); ++i) {
-      if (workers[i] == ui->FIO->text()) {
+  if (ui_->Find->isChecked()) {
+    for (ssize_t i = 0; i < std::ssize(workers) && !found; ++i) {
+      if (workers[i] == ui_->FIO->text()) {
         bf.full_name = workers[i];
         bf.age = QString::number(workers_properties[i].first);
         bf.salary = QString::number(workers_properties[i].second);
-        ui->Num->setText(QString::number(++i, 10));
+        ui_->Num->setText(QString::number(i, kDec));
         auto* unit = new Informational;
-        bf.n = i;
+        bf.n = i + 1;
         unit->show();
         found = true;
-        break;
       }
     }
-    if (!found) {
-      ui->Num->setText("Работник не найден.");
-    }
-  } else if (ui->Remove->isChecked()) {
-    for (unsigned i = 0; i < workers.size(); ++i) {
-      if (workers[i] == ui->FIO->text()
-          && workers_properties[i].first == ui->Year->text().toInt()) {
+  } else if (ui_->Remove->isChecked()) {
+    for (ssize_t i = 0; i < std::ssize(workers) && !found; ++i) {
+      if (workers[i] == ui_->FIO->text()
+          && workers_properties[i].first == ui_->Year->text().toInt()) {
         cntSalary -= workers_properties[i].second;
 
         workers.erase(workers.begin() + i);
         workers_properties.erase(workers_properties.begin() + i);
-        ui->Num->setText("Работник удалён");
+        ui_->Num->setText("Работник удалён");
 
-        auto* data = new QStandardItemModel;
-        QStringList name_columns;
-        name_columns.append("ФИО сотрудника");
-        name_columns.append("Год рождения");
-        name_columns.append("Заработная плата");
-        data->setHorizontalHeaderLabels(name_columns);
+        QStandardItemModel* data = NewWorkersModel();
+        PrintWorkerEntry(data);
 
-        for (unsigned cnt = 0; cnt < workers.size(); ++cnt) {
-          auto* workerFIO = new QStandardItem(workers[cnt]);
-          auto* workerBY = new QStandardItem(QString::number(
-              workers_properties[cnt].first,
-              10));
-          auto* workerSalary = new QStandardItem(QString::number(
-              workers_properties[cnt].second,
-              10));
-          data->setItem(cnt, 0, workerFIO);
-          data->setItem(cnt, 1, workerBY);
-          data->setItem(cnt, 2, workerSalary);
-        }
+        ui_->Base->setModel(data);
+        ui_->Base->resizeColumnsToContents();
 
-        ui->Base->setModel(data);
-        ui->Base->resizeColumnsToContents();
-
-        ui->TotalZP->setText(QString::number(cntSalary, 10));
+        ui_->TotalZP->setText(QString::number(cntSalary, kDec));
 
         found = true;
-        break;
       }
     }
-    if (!found) {
-      ui->Num->setText("Работник не найден.");
-    }
+  }
+  if (!found) {
+    ui_->Num->setText("Работник не найден.");
   }
 }
 
 void DataBase::CountClicked() {
-  ui->countInfo->setText(QString::number(workers.size(), 10));
+  ui_->countInfo->setText(QString::number(workers.size(), kDec));
 }
 
 void DataBase::AddWinClicked() {
