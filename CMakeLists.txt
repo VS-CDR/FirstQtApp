@@ -13,6 +13,7 @@ qt_standard_project_setup()
 
 qt_add_executable(db_workers
         headers/buffer.h
+        sources/buffer.cpp
 
         headers/database.h
         sources/database.cpp
