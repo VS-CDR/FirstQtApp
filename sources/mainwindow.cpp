@@ -1,4 +1,4 @@
-#include "../headers/database.h"
+#include "../headers/mainwindow.h"
 #include "ui_database.h"
 #include "../headers/add_worker_win.h"
 #include "../headers/buffer.h"
@@ -18,8 +18,7 @@ DataBase::~DataBase() {
 
 long long cntSalary = 0;
 std::vector<QString> workers;
-std::vector<QPair < int, int>>
-workers_properties;
+std::vector<QPair<int, int>> workers_properties;
 
 void DataBase::AddWorkerClicked() {
   if (bf.full_name.isEmpty()) {

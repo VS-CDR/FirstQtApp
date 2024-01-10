@@ -15,9 +15,9 @@ qt_add_executable(db_workers
         headers/buffer.h
         sources/buffer.cpp
 
-        headers/database.h
-        sources/database.cpp
-        sources/database.ui
+        headers/mainwindow.h
+        sources/mainwindow.cpp
+        sources/mainwindow.ui
 
         headers/add_worker_win.h
         sources/add_worker_win.cpp

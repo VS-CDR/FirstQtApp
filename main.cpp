@@ -1,10 +1,10 @@
-#include "headers/database.h"
+#include "headers/mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
-  QApplication a(argc, argv);
-  DataBase w;
-  w.setWindowTitle("База данных рабочих");
-  w.show();
+  QApplication app(argc, argv);
+  DataBase main_window;
+  main_window.setWindowTitle("База данных рабочих");
+  main_window.show();
   return QApplication::exec();
 }
