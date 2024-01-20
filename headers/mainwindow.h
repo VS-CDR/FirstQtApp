@@ -28,6 +28,6 @@ class DataBase : public QMainWindow {
   constexpr static int kDec = 10;
   Ui::DataBase *ui_;
   void PrintWorkerEntry(QStandardItemModel* data) const;
-  QStandardItemModel* NewWorkersModel() const;
+  [[nodiscard]] QStandardItemModel* NewWorkersModel() const;
 };
 #endif // DATABASE_H
