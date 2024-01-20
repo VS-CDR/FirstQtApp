@@ -1,2 +1,2 @@
 # FirstQtProject
-My first attempt to create a db-like app on C++/Qt.
+My first attempt to create a DBMS app on C++/Qt.
