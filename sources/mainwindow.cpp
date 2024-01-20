@@ -17,8 +17,8 @@ DataBase::~DataBase() {
 }
 
 long long cntSalary = 0;
-std::vector<QString> workers;
-std::vector<QPair<int, int>> workers_properties;
+QVector<QString> workers;
+QVector<QPair<int, int>> workers_properties;
 
 QStandardItemModel* DataBase::NewWorkersModel() const {
   auto* data = new QStandardItemModel;
@@ -51,10 +51,10 @@ void DataBase::AddWorkerClicked() {
 void DataBase::PrintWorkerEntry(QStandardItemModel* data) const {
   for (int cnt = 0; cnt < std::ssize(workers); ++cnt) {
     auto* worker_fio = new QStandardItem(workers[cnt]);
-    auto* worker_by = new QStandardItem(QString::number(
-        workers_properties[cnt].first, kDec));
-    auto* worker_salary = new QStandardItem(QString::number(
-        workers_properties[cnt].second, kDec));
+    auto* worker_by = new QStandardItem(
+        QString::number(workers_properties[cnt].first, kDec));
+    auto* worker_salary = new QStandardItem(
+        QString::number(workers_properties[cnt].second, kDec));
     data->setItem(cnt, 0, worker_fio);
     data->setItem(cnt, 1, worker_by);
     data->setItem(cnt, 2, worker_salary);
@@ -78,8 +78,8 @@ void DataBase::SearchClicked() {
     }
   } else if (ui_->Remove->isChecked()) {
     for (ssize_t i = 0; i < std::ssize(workers) && !found; ++i) {
-      if (workers[i] == ui_->FIO->text()
-          && workers_properties[i].first == ui_->Year->text().toInt()) {
+      if (workers[i] == ui_->FIO->text() &&
+          workers_properties[i].first == ui_->Year->text().toInt()) {
         cntSalary -= workers_properties[i].second;
 
         workers.erase(workers.begin() + i);
